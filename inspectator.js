@@ -1,3 +1,5 @@
+const NEED_REDRAW_ATTRS = new Set(["x", "y"]);
+
 var inspectator_focused = null;
 
 function showDetail(obj) {
@@ -78,6 +80,11 @@ function inspectator_onedit(t) {
 
     // update
     inspectator_focused[id] = attr.value;
+
+    // redraw
+    if (NEED_REDRAW_ATTRS.has(id)) {
+        window.MainEnv.canvasMgr.redraw();
+    }
 }
 
 function inspectator_unfold(t) {

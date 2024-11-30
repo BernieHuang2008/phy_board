@@ -6,6 +6,14 @@ class PhyBoardBasicObject {
     }
 
     attrs = {
+        "id": {
+            "id": "id",
+            "value": -1,
+            "vtype": "number",
+            "readonly": true,
+            "name": "ID",
+            "category": "0基本"
+        },
         "name": {
             "id": "name",
             "value": "",
@@ -21,7 +29,7 @@ class PhyBoardBasicObject {
             "readonly": true,
             "name": "类别",
             "category": "0基本"
-        }
+        },
     };
 
     createProxy(t) {

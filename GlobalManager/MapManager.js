@@ -16,7 +16,11 @@ function ndArray(...args) {
 }
 
 class MapManager {
-    constructor(w, h) {
+    constructor(env) {
+        this.env = env;
+    }
+
+    init_map(w, h) {
         this.w = w;
         this.h = h;
         this.w_cell = Math.ceil(w / BOARDMAP_SECTOR_SIZE);
