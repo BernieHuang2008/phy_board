@@ -37,7 +37,7 @@ function render_detail_cate(cate, attrs) {
 }
 
 function render_detail_attr(attr) {
-    var res = `<div class="attr" data-id="${attr.id}">`;
+    var res = `<div class="attr">`;
     res += `<div class="attr-name">${attr.name}</div>`;
     res += `<div class="attr-value">${render_detail_type(attr)}</div>`;
     res += `</div>`;
@@ -50,22 +50,24 @@ function render_detail_type(attr) {
 
     var _onchange = `onchange="inspectator_onedit(this)"`;
     var _disabled = attr.readonly ? "disabled" : "";
+    var _dataset = `data-obj="${inspectator_focused.id}" data-id="${attr.id}"`;
 
     if (attr.vtype == "number") {
-        res = `<input ${_onchange} ${_disabled} type="number" value="${attr.value}" />`;
+        res = `<input ${_onchange} ${_disabled} ${_dataset} type="number" value="${attr.value}" />`;
     }
     else if (attr.vtype == "bool") {
-        res = `<input ${_onchange} ${_disabled} type="checkbox" ${attr.value ? "checked" : ""} />`;
+        res = `<input ${_onchange} ${_disabled} ${_dataset} type="checkbox" ${attr.value ? "checked" : ""} />`;
     }
     else if (attr.vtype == "string") {
-        res = `<input ${_onchange} ${_disabled} type="text" value="${attr.value}" />`;
+        res = `<input ${_onchange} ${_disabled} ${_dataset} type="text" value="${attr.value}" />`;
     }
 
     return res;
 }
 
 function inspectator_onedit(t) {
-    var id = t.parentElement.parentElement.dataset.id;
+    var obj_id = t.dataset.obj;
+    var id = t.dataset.id;
     var attr = inspectator_focused.attrs[id];
 
     if (attr.vtype == "number") {
@@ -79,7 +81,8 @@ function inspectator_onedit(t) {
     }
 
     // update
-    inspectator_focused[id] = attr.value;
+    var obj = window.MainEnv.objectMgr.id_object.get(Number(obj_id));
+    obj[id] = attr.value;
 
     // redraw
     if (NEED_REDRAW_ATTRS.has(id)) {
