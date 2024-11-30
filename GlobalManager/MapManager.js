@@ -1,20 +1,3 @@
-function ndArray(...args) {
-    var arg0 = args[0];
-
-    if (args.length == 1) {
-        if (arg0 instanceof Number) {
-            return Array(arg0);
-        }
-        else if (arg0 instanceof Function) {
-            return arg0();
-        }
-    }
-    else {
-        args.shift();
-        return Array.from(Array(arg0), () => ndArray(...args));
-    }
-}
-
 class MapManager {
     constructor(env) {
         this.env = env;
@@ -27,7 +10,32 @@ class MapManager {
         this.h_cell = Math.ceil(h / BOARDMAP_SECTOR_SIZE);
 
         this.map_revidx = new Map();    // reverse index
-        this.map = ndArray(this.w_cell, this.h_cell, () => { return new Set() });
+
+        // (old) static map
+        // this.map = ndArray(this.w_cell, this.h_cell, () => { return new Set() });
+
+        // build extendable map
+        this._map = {};
+        var t = this;
+        this.map = new Proxy(this._map, {
+            // only can set the inner part
+            get: function (target, index) {
+                if (!(index in t._map)) {
+                    t._map[index] = {}
+                }
+                return new Proxy(t._map[index], {
+                    set: function (target, index2, value) {
+                        t._map[index][index2] = value;
+                    },
+                    get: function (target, index2) {
+                        if (!(index2 in t._map[index])) {
+                            t._map[index][index2] = new Set();
+                        }
+                        return t._map[index][index2];
+                    }
+                })
+            }
+        })
     }
 
     _calc_cell(x, y) {
