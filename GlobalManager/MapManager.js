@@ -60,19 +60,19 @@ class MapManager {
         return true;
     }
 
-    remove(obj) {
+    remove_all(obj) {
         if (!this.map_revidx.has(obj))
             return false;
 
         // remove from main map
-        for (c of this.map_revidx.get(obj)) {
+        for (var c of this.map_revidx.get(obj)) {
             var [x_cell, y_cell] = c;
 
-            this.map[x_cell][y_cell].remove(obj);
+            this.map[x_cell][y_cell].delete(obj);
         }
 
         // remove from id record
-        this.map_revidx.remove(obj);
+        this.map_revidx.delete(obj);
 
         return true;
     }
@@ -81,20 +81,20 @@ class MapManager {
         var [x_cell, y_cell] = this._calc_cell(x, y);
 
         // remove from map
-        var res = this.map[x_cell][y_cell].remove(obj);
+        var res = this.map[x_cell][y_cell].delete(obj);
         if (!res)
             return false;
 
         // remove record
-        this.map_revidx.remove([x_cell, y_cell]);
+        this.map_revidx[obj].delete([x_cell, y_cell]);
         if (this.map_revidx.size == 0) {
-            this.remove(obj);
+            this.mao_revidx.delete(obj);
         }
 
         return true;
     }
 
-    get(x, y) {
+    getByPoint(x, y) {
         var [x_cell, y_cell] = this._calc_cell(x, y);
 
         var res = [];
@@ -104,7 +104,7 @@ class MapManager {
         return res;
     }
 
-    gets(lst) {
+    getByList(lst) {
         var res = new Set();
 
         for (c of lst) {
@@ -115,6 +115,26 @@ class MapManager {
 
         var res_list = [];
         for (obj of res) {
+            res_list.push(obj);
+        }
+
+        return res_list;
+    }
+
+    getAround(x, y, radius) {  // radius is optional
+        radius = radius || BOARDMAP_SECTOR_SIZE;
+        var radius_block = Math.ceil(radius / BOARDMAP_SECTOR_SIZE);
+        var [x_cell, y_cell] = this._calc_cell(x, y);
+
+        var res = new Set();
+        for (var i = -radius_block; i <= radius_block; i++) {
+            for (var j = -radius_block; j <= radius_block; j++) {
+                res = res.union(this.map[x_cell + i][y_cell + j]);
+            }
+        }
+
+        var res_list = [];
+        for (var obj of res) {
             res_list.push(obj);
         }
 

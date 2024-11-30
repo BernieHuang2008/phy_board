@@ -10,7 +10,14 @@ class PhyBoardPoint extends PhyBoardBasicObject {
                 "vtype": "number",
                 "readonly": false,
                 "name": "X 坐标",
-                "category": "1位置"
+                "category": "1位置",
+                "listener": {
+                    "change": function(obj, old_val, new_val) {
+                        window.MainEnv.mapMgr.remove_all(obj);
+                        window.MainEnv.mapMgr.add(obj, new_val, obj.y);
+                        window.MainEnv.canvasMgr.redraw();
+                    }
+                }
             },
             "y": {
                 "id": "y",
@@ -18,7 +25,14 @@ class PhyBoardPoint extends PhyBoardBasicObject {
                 "vtype": "number",
                 "readonly": false,
                 "name": "Y 坐标",
-                "category": "1位置"
+                "category": "1位置",
+                "listener": {
+                    "change": function(obj, old_val, new_val) {
+                        window.MainEnv.mapMgr.remove_all(obj);
+                        window.MainEnv.mapMgr.add(obj, obj.x, new_val);
+                        window.MainEnv.canvasMgr.redraw();
+                    }
+                }
             },
             "fixed": {
                 "id": "fixed",
@@ -44,16 +58,15 @@ class PhyBoardPoint extends PhyBoardBasicObject {
         return this;
     }
 
-    moveTo(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-
     draw(env) {
         var vbc = env.canvasMgr.viewboxCalculator();
         var ctx = env.canvasMgr.newContext();
         ctx.beginPath();
-        ctx.arc(vbc(0, this.x), vbc(1, this.y), DRAW_POINT_RADIUS, 360, 1);
+        ctx.arc(vbc(0, this.x), vbc(1, this.y), DRAW_POINT_RADIUS, 0, 2 * Math.PI);
         return ctx;
+    }
+
+    distance(x, y) {
+        return Math.sqrt((this.x - x) ** 2 + (this.y - y) ** 2);
     }
 };

@@ -1,6 +1,6 @@
 const canvas_w = $("#board-container").offsetWidth;
 const canvas_h = $("#board-container").offsetHeight;
-const MainViewboxOrigin = [-canvas_w / 2, canvas_h / 2, 1, -1]  // -1 for Rect-Coord system
+const MainViewboxOrigin = [-canvas_w / 2, -canvas_h / 2, 1, 1]
 
 // init main environment
 window.MainEnv = new Environment();
@@ -12,9 +12,19 @@ function init_main_canvas(canvasMgr) {
     var canvas = canvasMgr.canvas;
     canvas.id = "main-canvas";
     $("#board-container").appendChild(canvas);
-    window.main_canvas = canvas;
 }
 init_main_canvas(window.MainEnv.canvasMgr);
+
+// bind
+var main_canvas = window.MainEnv.canvasMgr.canvas;
+main_canvas.addEventListener("mousedown", function (e) {
+    // convert to abs coords
+    var x = window.MainEnv.canvasMgr.viewboxCalculator()(2, e.offsetX);
+    var y = window.MainEnv.canvasMgr.viewboxCalculator()(3, e.offsetY);
+
+    // console.log(x, y, window.MainEnv.mapMgr.getAround(x, y))
+    // TODO
+});
 
 // test
 a = new PhyBoardPoint(10, 20);

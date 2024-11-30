@@ -1,5 +1,6 @@
-const BOARDMAP_SECTOR_SIZE = 25;
 const DRAW_POINT_RADIUS = 3;
+const SELECT_RADIUS = 20;
+const BOARDMAP_SECTOR_SIZE = 20;    // equals SELECT_RADIUS
 
 
 

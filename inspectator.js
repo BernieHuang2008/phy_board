@@ -1,5 +1,3 @@
-const NEED_REDRAW_ATTRS = new Set(["x", "y"]);
-
 var inspectator_focused = null;
 
 function showDetail(obj) {
@@ -70,23 +68,32 @@ function inspectator_onedit(t) {
     var id = t.dataset.id;
     var attr = inspectator_focused.attrs[id];
 
-    if (attr.vtype == "number") {
-        attr.value = parseFloat(t.value);
-    }
-    else if (attr.vtype == "bool") {
-        attr.value = t.checked;
-    }
-    else if (attr.vtype == "string") {
-        attr.value = t.value;
+    var old_val = attr.value;
+    var new_val = null;
+    switch (attr.vtype) {
+        case "number":
+            new_val = parseFloat(t.value);
+            break;
+        case "bool":
+            new_val = t.checked;
+            break;
+        case "string":
+            new_val = t.value;
+            break;
     }
 
     // update
     var obj = window.MainEnv.objectMgr.id_object.get(Number(obj_id));
-    obj[id] = attr.value;
+    obj[id] = new_val;
 
-    // redraw
-    if (NEED_REDRAW_ATTRS.has(id)) {
-        window.MainEnv.canvasMgr.redraw();
+    // call listeners
+    if (obj.attrs[id].listener)
+        _call_listeners(obj.attrs[id].listener);
+
+    function _call_listeners(listener) {
+        if (listener["change"]) {
+            listener["change"](obj, old_val, new_val);
+        }
     }
 }
 
