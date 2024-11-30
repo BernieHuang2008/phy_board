@@ -1,0 +1,45 @@
+#inspectator-detail .cate-name {
+    margin: 0;
+    background-color: #0002;
+    cursor: pointer;
+    user-select: none;
+
+    &::before {
+        content: '▼';
+        scale: .9;
+        display: inline-block;
+        rotate: -90deg;
+        transition: .2s;
+    }
+}
+
+#inspectator-detail .cate-body {
+    padding-left: 1.5rem;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    display: none;
+}
+
+#inspectator-detail .cate.open {
+    & .cate-name::before {
+        rotate: 0deg;
+    }
+    & .cate-body {
+        display: block;
+    }
+}
+
+#inspectator-detail .attr .attr-name {
+    display: inline-block;
+    font-weight: bold;
+}
+
+#inspectator-detail .attr .attr-name::after {
+    content: "：";
+    display: inline-block;
+    font-weight: bold;
+}
+
+#inspectator-detail .attr .attr-value {
+    display: inline-block;
+}
