@@ -1,5 +1,12 @@
+/**
+ * Class representing a virtual keyboard.
+ */
 class VKeyboard {
     constructor() {
+        /**
+         * A map to keep track of the state of keys.
+         * @type {Object.<string, boolean>}
+         */
         this.keyMap = {};
 
         // listener

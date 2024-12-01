@@ -22,7 +22,7 @@ main_canvas.addEventListener("mousedown", function (e) {
     var x = window.MainEnv.canvasMgr.viewboxCalculator()(2, e.offsetX);
     var y = window.MainEnv.canvasMgr.viewboxCalculator()(3, e.offsetY);
 
-    // console.log(x, y, window.MainEnv.mapMgr.getAround(x, y))
+    console.log(x, y, window.MainEnv.mapMgr.getAround(x, y));
     // TODO
 });
 

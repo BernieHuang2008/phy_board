@@ -13,6 +13,21 @@ class CanvasManager {
         this.canvas.height = h;
     }
 
+    /**
+     * Creates a function to calculate viewbox coordinates.
+     *
+     * @returns {Function} A function that takes a mode and a value to convert coordinates.
+     * 
+     * The returned function has the following `modes`:
+     * - 0: absolute X -> relative X
+     * - 1: absolute Y -> relative Y
+     * - 2: relative X -> absolute X
+     * - 3: relative Y -> absolute Y
+     *
+     * @param {number} mode - The mode of conversion (0, 1, 2, or 3).
+     * @param {number} value - The coordinate value to be converted.
+     * @returns {number} The converted coordinate value.
+     */
     viewboxCalculator() {
         var t = this;
 
@@ -39,6 +54,9 @@ class CanvasManager {
         };
     }
 
+    /**
+     * Creates a new 2D context for the canvas.
+     */
     newContext() {
         return this.canvas.getContext('2d');
     }
@@ -57,6 +75,9 @@ class CanvasManager {
         ctx.clearRect(0, 0, this.w, this.h);
     }
 
+    /**
+     * Redraws the canvas without clearing it.
+     */
     redraw_without_clear() {
         this.env.objectMgr.all_do((id, obj) => {
             var ctx = obj.draw(this.env);
@@ -65,6 +86,9 @@ class CanvasManager {
         })
     }
 
+    /**
+     * Redraws the canvas.
+     */
     redraw() {
         this.clear();
         this.redraw_without_clear();

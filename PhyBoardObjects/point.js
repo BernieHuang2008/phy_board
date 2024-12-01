@@ -3,46 +3,49 @@ class PhyBoardPoint extends PhyBoardBasicObject {
         super();
 
         // init attrs
-        Object.assign(this.attrs, {
-            "x": {
-                "id": "x",
-                "value": 0,
-                "vtype": "number",
-                "readonly": false,
-                "name": "X 坐标",
-                "category": "1位置",
-                "listener": {
-                    "change": function(obj, old_val, new_val) {
+        /**
+         * Attributes of the PhyBoardPoint.
+         */
+        this.attrs = {
+            x: {
+                id: "x",
+                value: x,
+                vtype: "number",
+                readonly: false,
+                name: "X 坐标",
+                category: "1位置",
+                listener: {
+                    change: function (obj, old_val, new_val) {
                         window.MainEnv.mapMgr.remove_all(obj);
                         window.MainEnv.mapMgr.add(obj, new_val, obj.y);
                         window.MainEnv.canvasMgr.redraw();
                     }
                 }
             },
-            "y": {
-                "id": "y",
-                "value": 0,
-                "vtype": "number",
-                "readonly": false,
-                "name": "Y 坐标",
-                "category": "1位置",
-                "listener": {
-                    "change": function(obj, old_val, new_val) {
+            y: {
+                id: "y",
+                value: y,
+                vtype: "number",
+                readonly: false,
+                name: "Y 坐标",
+                category: "1位置",
+                listener: {
+                    change: function (obj, old_val, new_val) {
                         window.MainEnv.mapMgr.remove_all(obj);
                         window.MainEnv.mapMgr.add(obj, obj.x, new_val);
                         window.MainEnv.canvasMgr.redraw();
                     }
                 }
             },
-            "fixed": {
-                "id": "fixed",
-                "value": false,
-                "vtype": "bool",
-                "readonly": true,
-                "name": "固定",
-                "category": "1位置"
+            fixed: {
+                id: "fixed",
+                value: false,
+                vtype: "bool",
+                readonly: true,
+                name: "固定",
+                category: "1位置"
             }
-        })
+        };
 
         // regist
         window.MainEnv.objectMgr.add(this);
@@ -58,6 +61,13 @@ class PhyBoardPoint extends PhyBoardBasicObject {
         return this;
     }
 
+    /**
+     * Draws a point on the canvas.
+     *
+     * @param {Environment} env - The environment object containing canvas manager.
+     * @param {CanvasManager} env.canvasMgr - The canvas manager object.
+     * @returns {CanvasRenderingContext2D} The canvas context with the drawn point.
+     */
     draw(env) {
         var vbc = env.canvasMgr.viewboxCalculator();
         var ctx = env.canvasMgr.newContext();

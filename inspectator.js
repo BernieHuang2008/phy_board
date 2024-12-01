@@ -20,6 +20,10 @@ function showDetail(obj) {
     }
 }
 
+/*
+  Render details
+*/
+
 function render_detail_cate(cate, attrs) {
     var res = `<div class='cate'>`;
 
@@ -63,6 +67,11 @@ function render_detail_type(attr) {
     return res;
 }
 
+/**
+ * Handles the edit event for the inspector.
+ *
+ * @param {HTMLElement} t - The HTML element that triggered the edit event.
+ */
 function inspectator_onedit(t) {
     var obj_id = t.dataset.obj;
     var id = t.dataset.id;
