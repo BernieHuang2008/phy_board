@@ -7,7 +7,7 @@
       "global.d.ts",
       "GlobalManager/*.js",
       "PhyBoardObjects/*.js",
-      "inspectator.js",
+      "ui/*.js",
       "init.js",
       "settings.js",
     ]

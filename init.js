@@ -22,8 +22,30 @@ main_canvas.addEventListener("mousedown", function (e) {
     var x = window.MainEnv.canvasMgr.viewboxCalculator()(2, e.offsetX);
     var y = window.MainEnv.canvasMgr.viewboxCalculator()(3, e.offsetY);
 
-    console.log(x, y, window.MainEnv.mapMgr.getAround(x, y));
-    // TODO
+    // choose the nearest
+    var around = window.MainEnv.mapMgr.getAround(x, y);
+    var nearest = null;
+    var min_dist = SELECT_RADIUS;
+    for (var obj of around) {
+        var dist = obj.distance(x, y);
+        if (dist < min_dist) {
+            min_dist = dist;
+            nearest = obj;
+        }
+    }
+    if (nearest) {
+        if (window.MainEnv.ioMgr.vkb.keyMap["Control"]) {
+            window.MainEnv.objectMgr.select_add(nearest);
+        }
+        else {
+            window.MainEnv.objectMgr.select(nearest);
+        }
+    }
+    else {
+        if (!window.MainEnv.ioMgr.vkb.keyMap["Control"]) {
+            window.MainEnv.objectMgr.select(null);
+        }
+    }
 });
 
 // test

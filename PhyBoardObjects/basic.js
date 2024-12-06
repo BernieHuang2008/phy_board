@@ -62,4 +62,12 @@ class PhyBoardBasicObject {
             }
         });
     }
+
+    draw_outline(env) {
+        var ctx = this.draw(env);
+        ctx.strokeStyle = "#ff57ff";
+        ctx.lineWidth = 4;
+        ctx.stroke();
+        ctx.fill();
+    }
 }
