@@ -1,3 +1,7 @@
+#inspectator {
+    background: #0000000f;
+}
+
 #inspectator-detail h1 {
     user-select: none;
 }
@@ -46,4 +50,9 @@
 
 #inspectator-detail .attr .attr-value {
     display: inline-block;
+}
+
+table, td, th {
+    border: 1px solid #282A35;
+    border-collapse: collapse;
 }

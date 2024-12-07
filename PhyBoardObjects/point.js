@@ -6,7 +6,7 @@ class PhyBoardPoint extends PhyBoardBasicObject {
         /**
          * Attributes of the PhyBoardPoint.
          */
-        this.attrs = {
+        Object.assign(this.attrs, {
             x: {
                 id: "x",
                 value: x,
@@ -40,12 +40,12 @@ class PhyBoardPoint extends PhyBoardBasicObject {
             fixed: {
                 id: "fixed",
                 value: false,
-                vtype: "bool",
+                vtype: "list.bool",
                 readonly: true,
                 name: "固定",
                 category: "1位置"
             }
-        };
+        });
 
         // regist
         window.MainEnv.objectMgr.add(this);
@@ -56,7 +56,7 @@ class PhyBoardPoint extends PhyBoardBasicObject {
         this.class = "位置点";
         this.x = x;
         this.y = y;
-        this.fixed = false;
+        this.fixed = [false];
 
         return this;
     }
