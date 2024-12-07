@@ -4,5 +4,6 @@ class Environment {
         this.mapMgr = new MapManager(this);
         this.canvasMgr = new CanvasManager(this);
         this.ioMgr = new IOManager(this);
+        this.world = new PhyBoardWorldFakeobj(this);
     }
 }

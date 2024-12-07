@@ -40,7 +40,7 @@ class PhyBoardPoint extends PhyBoardBasicObject {
             fixed: {
                 id: "fixed",
                 value: false,
-                vtype: "list.bool",
+                vtype: "bool",
                 readonly: true,
                 name: "固定",
                 category: "1位置"
@@ -53,10 +53,10 @@ class PhyBoardPoint extends PhyBoardBasicObject {
 
         // init
         this.name = `点 ${this.id}`;
-        this.class = "位置点";
+        this.class = "质点";
         this.x = x;
         this.y = y;
-        this.fixed = [false];
+        this.fixed = false;
 
         return this;
     }

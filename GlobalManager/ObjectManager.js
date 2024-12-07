@@ -7,7 +7,7 @@ class ObjectManager {
         this.selected = [];
     }
 
-    _id_counter = 0
+    _id_counter = 1;
 
     /**
      * Use an id-counter to generate a new id.
@@ -55,7 +55,7 @@ class ObjectManager {
         this.selected = [];
 
         if (obj == null) {
-            showDetail(null);   // TODO: change default to 'World' Fake Object
+            showDetail(window.MainEnv.world);   // TODO: change default to 'World' Fake Object
             return;
         }
         this.select_add(obj);
