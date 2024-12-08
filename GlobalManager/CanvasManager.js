@@ -11,6 +11,8 @@ class CanvasManager {
         this.canvas = document.createElement("canvas");
         this.canvas.width = w;
         this.canvas.height = h;
+
+        this._gray_out_except_set = new Set();
     }
 
     /**
@@ -81,8 +83,11 @@ class CanvasManager {
     redraw_without_clear() {
         this.env.objectMgr.all_do((id, obj) => {
             var ctx = obj.draw(this.env);
-            // ctx.fillStyle = "#000";
-            ctx.fill();
+            ctx.lineWidth = DRAW_LINEWIDTH;
+            ctx.strokeStyle = "#000";
+            if (this._gray_out_except_set.has(obj))
+                ctx.globalAlpha = 0.2;
+            ctx.stroke();
         })
     }
 
@@ -92,5 +97,9 @@ class CanvasManager {
     redraw() {
         this.clear();
         this.redraw_without_clear();
+    }
+
+    gray_out_except(objs) {
+        this._gray_out_except_set = objs || new Set();
     }
 }

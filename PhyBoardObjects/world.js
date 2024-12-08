@@ -18,8 +18,18 @@ class PhyBoardWorldFakeobj extends PhyBoardBasicObject {
             }
         });
 
-        // init attrs
+        // init
         this.name = "全局设置";
         this.class = "世界";
+
+        // regist
+        this.env.objectMgr.add(this);
+
+        return this;
+    }
+
+    draw() {
+        // pass
+        return this.env.canvasMgr.newContext();
     }
 }

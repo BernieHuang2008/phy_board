@@ -50,5 +50,5 @@ main_canvas.addEventListener("mousedown", function (e) {
 
 // test
 a = new PhyBoardPoint(10, 20);
-b = new PhyBoardPoint(10, 20);
+b = new PhyBoardForce(a, [100, 100]);
 window.MainEnv.canvasMgr.redraw();

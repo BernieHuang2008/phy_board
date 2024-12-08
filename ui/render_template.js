@@ -28,22 +28,19 @@ inspectator_template = {
         "rd": function (attr, paras) {
             return `<input ${_stdtemplate(attr)} type="number" value="${attr.value}" />`;
         },
-        "onc": function (old, t) {
-            return parseFloat(t.value);
-        }
+        "onc": (old, t) => Number(t.value)
     },
     "bool": {
         "rd": function (attr, paras) {
             return `<input ${_stdtemplate(attr)} type="checkbox" ${attr.value ? "checked" : ""} />`;
         },
-        "onc": function (old, t) {
-            return t.checked;
-        }
+        "onc": (old, t) => t.checked
     },
     "list": {
         "rdx": function (attr, paras) {
             /**
-             * Render-X mode -- more customized rendering that can fully override the whole 'attr' dom.
+             * Render-X mode
+             * More customized rendering that can fully override the whole 'attr' dom.
              */
             var subtype = paras.shift(0);
             function _rd_list_item(x) {
@@ -51,16 +48,18 @@ inspectator_template = {
                     id: attr.id,
                     value: x,
                     vtype: subtype,
-                    // readonly: attr.readonly,
+                    readonly: attr.readonly,
                 }
                 var template = inspectator_template[subtype];
                 return (template.rd || template.rdx)(fake_attr, paras); // use rd mode as ideal way to render list items
             }
 
+            // Start Render
             var html = `<table><thead><th colspan="2">${attr.name}</th></thead><tbody>`;
             for (var i = 0; i < attr.value.length; i++) {
                 html += `<tr><td>${i + 1}</td><td data-i="${i}">${_rd_list_item(attr.value[i])}</td></tr>`;
             }
+            html += `<tr><td colspan="2"><button class="full" onclick="inspectator_list_add(this)">+</button></td></tr>`;
             html += `</tbody></table>`;
             return html;
         },
@@ -87,5 +86,45 @@ inspectator_template = {
 
             return old; // prevent triggling overwriting
         }
-    }
+    },
+    "boardobj": {
+        "rd": function (attr, paras) {
+            var subtype = paras[0];
+            var subtypes = subtype.split("/");
+            var objs = window.MainEnv.objectMgr.get_all_obj_of_types(subtypes);
+
+            // Start Render
+            var datalist_id = `datalist-${attr.id}-${Math.random()}`;
+            var html = `<div>`;
+
+            // setting up <input>
+            html += `<input list='${datalist_id}' type='text' placeholder='◈ | ${subtype}' data-allow-types='${subtype}'/>`;
+
+            // setting up <datalist> for auto-completion
+            html += `<datalist id='${datalist_id}'>`
+            for (var obj of objs) {
+                html += `<option value='${obj.name} [#${obj.id}]'></option>`;
+            }
+            html += `</datalist>`;
+
+            html += `</div>`;
+            return html;
+        },
+        "onf": function (t, e) {    // onfocus
+            var subtypes = t.dataset.allowTypes.split("/");
+            var objs = window.MainEnv.objectMgr.get_all_obj_of_types(subtypes);
+            
+            window.MainEnv.canvasMgr.gray_out_except(objs);
+            window.MainEnv.canvasMgr.redraw();
+
+            return t;
+        },
+        "onb": function (t, e) {    // onblur
+            window.MainEnv.canvasMgr.gray_out_except(null);
+            window.MainEnv.canvasMgr.redraw();
+        },
+        "onc": function (old, t) {
+            return old;
+        }
+    },
 }

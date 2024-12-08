@@ -65,9 +65,13 @@ class PhyBoardBasicObject {
 
     draw_outline(env) {
         var ctx = this.draw(env);
+        // draw outline
         ctx.strokeStyle = "#ff57ff";
-        ctx.lineWidth = 4;
+        ctx.lineWidth = DRAW_LINEWIDTH * 2;
         ctx.stroke();
-        ctx.fill();
+        // redraw original
+        ctx.lineWidth = DRAW_LINEWIDTH;
+        ctx.strokeStyle = "#000";
+        ctx.stroke();
     }
 }

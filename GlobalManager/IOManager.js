@@ -31,4 +31,8 @@ class IOManager {
         this.env = env;
         this.vkb = new VKeyboard();
     }
+
+    require_select_obj(objs) {
+
+    }
 }

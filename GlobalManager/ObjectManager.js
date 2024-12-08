@@ -4,10 +4,11 @@ class ObjectManager {
 
         this.object_id = new Map();
         this.id_object = new Map();
+        this.type_object = new Map();
         this.selected = [];
     }
 
-    _id_counter = 1;
+    _id_counter = 0;    // 0 will be assigned to the World object
 
     /**
      * Use an id-counter to generate a new id.
@@ -26,6 +27,12 @@ class ObjectManager {
         this.object_id.set(obj, id);
         this.id_object.set(id, obj);
 
+        var objclass = (Reflect.getPrototypeOf(obj)).constructor.name;
+        if (objclass in this.type_object)
+            this.type_object.get(objclass).add(obj);
+        else
+            this.type_object.set(objclass, new Set([obj]));
+
         obj.id = id;
     }
 
@@ -35,6 +42,7 @@ class ObjectManager {
     remove(obj) {
         this.object_id.remove(obj);
         this.id_object.remove(id);
+        this.type_object.get(obj.constructor.name).delete(obj);
     }
 
     /**
@@ -60,13 +68,19 @@ class ObjectManager {
         }
         this.select_add(obj);
     }
-
-    /**
-     * Add an object to the selected list.
-     */
     select_add(obj) {
         this.selected.push(obj);
         obj.draw_outline(this.env);
         showDetail(obj);
+    }
+
+    get_all_obj_of_types(types) {
+        var objs = new Set();
+        for (var i=0; i<types.length; i++) {
+            var subt = types[i];
+            var all_objs_of_type = this.type_object.get(subt) || new Set();
+            objs = objs.union(all_objs_of_type);
+        }
+        return objs;
     }
 }

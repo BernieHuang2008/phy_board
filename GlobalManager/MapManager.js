@@ -52,7 +52,7 @@ class MapManager {
         var [x_cell, y_cell] = this._calc_cell(x, y);
 
         if (this.map_revidx.has(obj)) {
-            this.map_revidx[obj].push([x_cell, y_cell]);
+            this.map_revidx.get(obj).push([x_cell, y_cell]);
             this.map[x_cell][y_cell].add(obj);
         }
         else {
@@ -95,7 +95,7 @@ class MapManager {
             return false;
 
         // remove record
-        this.map_revidx[obj].delete([x_cell, y_cell]);
+        this.map_revidx.get(obj).delete([x_cell, y_cell]);
         if (this.map_revidx.size == 0) {
             this.mao_revidx.delete(obj);
         }
